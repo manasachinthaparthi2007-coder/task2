@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MyBlog - Blog Application</title>
+
+<style>
+
+/* =========================
+   GENERAL
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    color: #333;
+}
+
+button,
+input,
+textarea,
+select {
+    font-family: inherit;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+header {
+    background: #222;
+    color: white;
+    padding: 18px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+nav a:hover {
+    color: #4facfe;
+}
+
+/* =========================
+   PAGES
+========================= */
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+/* =========================
+   HOME
+========================= */
+
+.hero {
+    text-align: center;
+    padding: 90px 20px;
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    color: white;
+}
+
+.hero h1 {
+    font-size: 45px;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    font-size: 19px;
+    margin-bottom: 30px;
+}
+
+.btn {
+    background: #222;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn:hover {
+    background: #444;
+}
+
+.blogs {
+    padding: 50px 8%;
+    text-align: center;
+}
+
+.blogs h2 {
+    margin-bottom: 30px;
+}
+
+.blog-container {
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.blog-card {
+    background: white;
+    width: 30%;
+    min-width: 250px;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+}
+
+.blog-card h3 {
+    margin-bottom: 15px;
+}
+
+.blog-card p {
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.read-btn {
+    background: #4facfe;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.form-container {
+    width: 420px;
+    max-width: 90%;
+    margin: 50px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+}
+
+.form-container h2 {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.form-container label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.form-container input,
+.form-container select,
+.form-container textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+.form-container input:focus,
+.form-container textarea:focus,
+.form-container select:focus {
+    border-color: #4facfe;
+}
+
+.form-container textarea {
+    height: 150px;
+    resize: vertical;
+}
+
+.form-container .btn {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.form-container p {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.form-container a {
+    color: #4facfe;
+    cursor: pointer;
+}
+
+/* =========================
+   DASHBOARD
+========================= */
+
+.dashboard {
+    width: 85%;
+    margin: 40px auto;
+}
+
+.dashboard h1 {
+    margin-bottom: 30px;
+}
+
+.stats {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 35px;
+}
+
+.stat-card {
+    background: white;
+    padding: 25px;
+    flex: 1;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.stat-card h3 {
+    font-size: 32px;
+    color: #4facfe;
+    margin-bottom: 8px;
+}
+
+.dashboard h2 {
+    margin: 30px 0 20px;
+}
+
+.my-blog {
+    background: white;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.my-blog h3 {
+    margin-bottom: 8px;
+}
+
+.my-blog p {
+    margin-bottom: 15px;
+}
+
+.delete-btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background: #c0392b;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #222;
+    color: white;
+    margin-top: 50px;
+}
+
+/* =========================
+   RESPONSIVE DESIGN
+========================= */
+
+@media (max-width: 768px) {
+
+    header {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    nav a {
+        margin: 0 7px;
+    }
+
+    .hero h1 {
+        font-size: 32px;
+    }
+
+    .blog-card {
+        width: 90%;
+    }
+
+    .stats {
+        flex-direction: column;
+    }
+
+    .dashboard {
+        width: 90%;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header>
+
+    <div class="logo">
+        MyBlog
+    </div>
+
+    <nav>
+
+        <a onclick="showPage('home')">
+            Home
+        </a>
+
+        <a onclick="showPage('login')">
+            Login
+        </a>
+
+        <a onclick="showPage('register')">
+            Register
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- =========================
+     HOME PAGE
+========================= -->
+
+<section id="home" class="page active">
+
+    <div class="hero">
+
+        <h1>
+            Welcome to MyBlog
+        </h1>
+
+        <p>
+            Share your thoughts, stories and ideas with the world.
+        </p>
+
+        <button
+            class="btn"
+            onclick="showPage('create')">
+
+            Create Your Blog
+
+        </button>
+
+    </div>
+
+
+    <div class="blogs">
+
+        <h2>
+            Latest Blogs
+        </h2>
+
+
+        <div
+            class="blog-container"
+            id="homeBlogs">
+
+
+            <div class="blog-card">
+
+                <h3>
+                    Technology Trends
+                </h3>
+
+                <p>
+                    Learn about the latest technology
+                    and innovations.
+                </p>
+
+                <button
+                    class="read-btn"
+                    onclick="alert('Technology is changing the world!')">
+
+                    Read More
+
+                </button>
+
+            </div>
+
+
+            <div class="blog-card">
+
+                <h3>
+                    Travel Stories
+                </h3>
+
+                <p>
+                    Beautiful travel experiences
+                    and interesting places.
+                </p>
+
+                <button
+                    class="read-btn"
+                    onclick="alert('Explore the world and create memories!')">
+
+                    Read More
+
+                </button>
+
+            </div>
+
+
+            <div class="blog-card">
+
+                <h3>
+                    Student Life
+                </h3>
+
+                <p>
+                    Tips and experiences about
+                    college student life.
+                </p>
+
+                <button
+                    class="read-btn"
+                    onclick="alert('College life is full of learning and memories!')">
+
+                    Read More
+
+                </button>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     LOGIN PAGE
+========================= -->
+
+<section id="login" class="page">
+
+    <div class="form-container">
+
+        <h2>
+            Login
+        </h2>
+
+
+        <form id="loginForm">
+
+            <label>
+                Email
+            </label>
+
+            <input
+                type="email"
+                id="loginEmail"
+                placeholder="Enter your email">
+
+
+            <label>
+                Password
+            </label>
+
+            <input
+                type="password"
+                id="loginPassword"
+                placeholder="Enter your password">
+
+
+            <button
+                type="submit"
+                class="btn">
+
+                Login
+
+            </button>
+
+        </form>
+
+
+        <p>
+
+            Don't have an account?
+
+            <a onclick="showPage('register')">
+                Register
+            </a>
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     REGISTER PAGE
+========================= -->
+
+<section id="register" class="page">
+
+    <div class="form-container">
+
+        <h2>
+            Create Account
+        </h2>
+
+
+        <form id="registerForm">
+
+
+            <label>
+                Name
+            </label>
+
+            <input
+                type="text"
+                id="name"
+                placeholder="Enter your name">
+
+
+            <label>
+                Email
+            </label>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter your email">
+
+
+            <label>
+                Password
+            </label>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter password">
+
+
+            <label>
+                Confirm Password
+            </label>
+
+            <input
+                type="password"
+                id="confirmPassword"
+                placeholder="Confirm password">
+
+
+            <button
+                type="submit"
+                class="btn">
+
+                Register
+
+            </button>
+
+        </form>
+
+
+        <p>
+
+            Already have an account?
+
+            <a onclick="showPage('login')">
+                Login
+            </a>
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     DASHBOARD PAGE
+========================= -->
+
+<section id="dashboard" class="page">
+
+    <div class="dashboard">
+
+        <h1>
+            My Dashboard
+        </h1>
+
+
+        <div class="stats">
+
+
+            <div class="stat-card">
+
+                <h3 id="totalBlogs">
+                    3
+                </h3>
+
+                <p>
+                    Total Blogs
+                </p>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <h3>
+                    3
+                </h3>
+
+                <p>
+                    Published
+                </p>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <h3>
+                    0
+                </h3>
+
+                <p>
+                    Drafts
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+        <button
+            class="btn"
+            onclick="showPage('create')">
+
+            Create New Blog
+
+        </button>
+
+
+        <h2>
+            My Blogs
+        </h2>
+
+
+        <div id="myBlogs">
+
+
+            <div class="my-blog">
+
+                <h3>
+                    My First Blog
+                </h3>
+
+                <p>
+                    This is my first blog post.
+                </p>
+
+                <button
+                    class="delete-btn"
+                    onclick="deleteBlog(this)">
+
+                    Delete
+
+                </button>
+
+            </div>
+
+
+            <div class="my-blog">
+
+                <h3>
+                    Technology
+                </h3>
+
+                <p>
+                    Technology is changing our lives.
+                </p>
+
+                <button
+                    class="delete-btn"
+                    onclick="deleteBlog(this)">
+
+                    Delete
+
+                </button>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CREATE BLOG PAGE
+========================= -->
+
+<section id="create" class="page">
+
+    <div class="form-container">
+
+        <h2>
+            Create New Blog
+        </h2>
+
+
+        <form id="blogForm">
+
+
+            <label>
+                Blog Title
+            </label>
+
+            <input
+                type="text"
+                id="blogTitle"
+                placeholder="Enter blog title">
+
+
+            <label>
+                Author
+            </label>
+
+            <input
+                type="text"
+                id="author"
+                placeholder="Enter author name">
+
+
+            <label>
+                Category
+            </label>
+
+            <select id="category">
+
+                <option value="">
+                    Select Category
+                </option>
+
+                <option>
+                    Technology
+                </option>
+
+                <option>
+                    Travel
+                </option>
+
+                <option>
+                    Education
+                </option>
+
+                <option>
+                    Sports
+                </option>
+
+                <option>
+                    Other
+                </option>
+
+            </select>
+
+
+            <label>
+                Blog Content
+            </label>
+
+            <textarea
+                id="content"
+                placeholder="Write your blog here...">
+            </textarea>
+
+
+            <button
+                type="submit"
+                class="btn">
+
+                Publish Blog
+
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <p>
+        © 2026 MyBlog. All Rights Reserved.
+    </p>
+
+</footer>
+
+
+<script>
+
+/* =========================
+   PAGE NAVIGATION
+========================= */
+
+function showPage(pageName) {
+
+    const pages =
+        document.querySelectorAll(".page");
+
+    pages.forEach(function(page) {
+
+        page.classList.remove("active");
+
+    });
+
+
+    document
+        .getElementById(pageName)
+        .classList.add("active");
+
+
+    window.scrollTo(0, 0);
+    if (pageName === "dashboard") {
+    loadBlogs();
+}
+}
+
+
+/* =========================
+   REGISTER
+========================= */
+/*
+document
+    .getElementById("registerForm")
+    .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+
+        const name =
+            document
+                .getElementById("name")
+                .value
+                .trim();
+
+
+        const email =
+            document
+                .getElementById("email")
+                .value
+                .trim();
+
+
+        const password =
+            document
+                .getElementById("password")
+                .value;
+
+
+        const confirmPassword =
+            document
+                .getElementById("confirmPassword")
+                .value;
+
+
+        if (
+            name === "" ||
+            email === "" ||
+            password === "" ||
+            confirmPassword === ""
+        ) {
+
+            alert("Please fill all the fields.");
+
+            return;
+        }
+
+
+        if (password !== confirmPassword) {
+
+            alert("Passwords do not match.");
+
+            return;
+        }
+
+
+        alert(
+            "Registration successful!"
+        );
+
+
+        showPage("login");
+
+    });
+
+*/
+document
+    .getElementById("registerForm")
+    .addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+
+    if (name === "" || email === "" || password === "" || confirmPassword === "") {
+        alert("Please fill all the fields.");
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        alert("Passwords do not match.");
+        return;
+    }
+
+    const response = await fetch("http://localhost:5000/api/register", {
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+            name: name,
+            email: email,
+            password: password
+        })
+    });
+
+    const data = await response.json();
+
+    alert(data.message);
+
+    if (response.ok) {
+        document.getElementById("registerForm").reset();
+        showPage("login");
+    }
+
+});
+/* =========================
+   LOGIN
+========================= */
+/*
+document
+    .getElementById("loginForm")
+    .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+
+        const email =
+            document
+                .getElementById("loginEmail")
+                .value
+                .trim();
+
+
+        const password =
+            document
+                .getElementById("loginPassword")
+                .value;
+
+
+        if (
+            email === "" ||
+            password === ""
+        ) {
+
+            alert(
+                "Please enter email and password."
+            );
+
+            return;
+        }
+
+
+        alert(
+            "Login successful!"
+        );
+
+
+        showPage("dashboard");
+
+    });
+*/
+document
+    .getElementById("loginForm")
+    .addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    const email = document
+        .getElementById("loginEmail")
+        .value
+        .trim();
+
+    const password = document
+        .getElementById("loginPassword")
+        .value;
+
+    if (email === "" || password === "") {
+        alert("Please enter email and password.");
+        return;
+    }
+
+    const response = await fetch("http://localhost:5000/api/login", {
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+            email: email,
+            password: password
+        })
+    });
+
+    const data = await response.json();
+
+    alert(data.message);
+
+    if (response.ok) {
+        showPage("dashboard");
+    }
+
+});
+
+/* =========================
+   CREATE BLOG
+========================= */
+/*
+document
+    .getElementById("blogForm")
+    .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+
+        const title =
+            document
+                .getElementById("blogTitle")
+                .value
+                .trim();
+
+
+        const author =
+            document
+                .getElementById("author")
+                .value
+                .trim();
+
+
+        const category =
+            document
+                .getElementById("category")
+                .value;
+
+
+        const content =
+            document
+                .getElementById("content")
+                .value
+                .trim();
+
+
+        if (
+            title === "" ||
+            author === "" ||
+            category === "" ||
+            content === ""
+        ) {
+
+            alert(
+                "Please fill all the fields."
+            );
+
+            return;
+        }
+
+
+        const blogContainer =
+            document.getElementById("myBlogs");
+
+
+        const newBlog =
+            document.createElement("div");
+
+
+        newBlog.className =
+            "my-blog";
+
+
+        newBlog.innerHTML = `
+
+            <h3>${title}</h3>
+
+            <p>
+                <strong>Author:</strong>
+                ${author}
+            </p>
+
+            <p>
+                <strong>Category:</strong>
+                ${category}
+            </p>
+
+            <p>
+                ${content}
+            </p>
+
+            <button
+                class="delete-btn"
+                onclick="deleteBlog(this)">
+
+                Delete
+
+            </button>
+        `;
+
+
+        blogContainer.appendChild(newBlog);
+
+
+        updateBlogCount();
+
+
+        alert(
+            "Blog published successfully!"
+        );
+
+
+        document
+            .getElementById("blogForm")
+            .reset();
+
+
+        showPage("dashboard");
+
+    });
+*/
+document
+    .getElementById("blogForm")
+    .addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    const title = document
+        .getElementById("blogTitle")
+        .value
+        .trim();
+
+    const author = document
+        .getElementById("author")
+        .value
+        .trim();
+
+    const category = document
+        .getElementById("category")
+        .value;
+
+    const content = document
+        .getElementById("content")
+        .value
+        .trim();
+
+    if (
+        title === "" ||
+        author === "" ||
+        category === "" ||
+        content === ""
+    ) {
+        alert("Please fill all the fields.");
+        return;
+    }
+
+    const response = await fetch("http://localhost:5000/api/blogs", {
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+            title: title,
+            author: author,
+            category: category,
+            content: content
+        })
+    });
+
+    const data = await response.json();
+
+    alert(data.message);
+
+    if (response.ok) {
+
+        document
+            .getElementById("blogForm")
+            .reset();
+
+        showPage("dashboard");
+    }
+
+});
+/* =========================
+   DELETE BLOG
+========================= */
+/*
+function deleteBlog(button) {
+
+    const confirmation =
+        confirm(
+            "Are you sure you want to delete this blog?"
+        );
+
+
+    if (confirmation) {
+
+        button.parentElement.remove();
+
+        updateBlogCount();
+
+        alert(
+            "Blog deleted successfully!"
+        );
+
+    }
+
+}
+*/
+async function deleteBlog(id) {
+
+    const confirmation = confirm(
+        "Are you sure you want to delete this blog?"
+    );
+
+    if (!confirmation) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            "http://localhost:5000/api/blogs/" + id,
+            {
+                method: "DELETE"
+            }
+        );
+
+        const data = await response.json();
+
+        console.log("Delete response:", data);
+
+        alert(data.message);
+
+        if (response.ok) {
+            loadBlogs();
+        }
+
+    } catch (error) {
+
+        console.error("Delete error:", error);
+
+        alert("Unable to connect to backend.");
+
+    }
+}
+/* =========================
+   UPDATE BLOG COUNT
+========================= */
+
+function updateBlogCount() {
+
+    const blogs =
+        document
+            .querySelectorAll(
+                "#myBlogs .my-blog"
+            );
+
+
+    document
+        .getElementById("totalBlogs")
+        .textContent = blogs.length;
+
+}
+
+async function loadBlogs() {
+
+    try {
+
+        const response = await fetch(
+            "http://localhost:5000/api/blogs"
+        );
+
+        const blogs = await response.json();
+
+        const blogContainer =
+            document.getElementById("myBlogs");
+
+        blogContainer.innerHTML = "";
+
+        blogs.forEach(function(blog) {
+
+            const newBlog =
+                document.createElement("div");
+
+            newBlog.className = "my-blog";
+
+           
+newBlog.innerHTML = `
+    <h3>${blog.title}</h3>
+
+    <p>
+        <strong>Author:</strong>
+        ${blog.author}
+    </p>
+
+    <p>
+        <strong>Category:</strong>
+        ${blog.category}
+    </p>
+
+    <p>
+        ${blog.content}
+    </p>
+
+    <button
+        class="delete-btn"
+        onclick="deleteBlog(${blog.id})">
+        Delete
+    </button>
+`;
+            blogContainer.appendChild(newBlog);
+        });
+
+        updateBlogCount();
+
+    } catch (error) {
+
+        console.error(
+            "Error loading blogs:",
+            error
+        );
+
+    }
+}
+</script>
+
+</body>
+</html>
